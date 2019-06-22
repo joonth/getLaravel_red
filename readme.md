@@ -1,58 +1,54 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+#### 2019년 6월 21 금요일
+- ### directory & file 설명
+  - .env : 외부에 값이 노출되면 안되거나 서비스 마다 달라지는 값을 저장 // .gitignore 등록
+  - composer.json : 프로젝트에 필요한 의존성을 정의
+  - config : 여러 설정들이 들어있고 일부분은 .env에서 받아서 사용
+  - package.json : 프로젝트에 필요한 js 의존성 정의
+  - vendor : 의존객체들이 담겨있는 디렉토리
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+- ### 라라벨 프로젝트 구조
+라라벨 프로젝트는 크게 네 부분으로 나눌 수 있다.
+ 1. 애플리케이션 레이어 : 라라벨 프레임워크에서 제공하는 문법(클래스,메소드)으로 개발하는 부분
+ 2. 라라벨 프레임워크(laravel/laravel) : 핵심컴포넌트와 외부 컴포넌트를 조합하여 웹서비스의 틀을 제공
+ 3. 라라벨 핵심 컴포넌트(laravel/framework)
+ 4. 외부 컴포넌트
 
-## About Laravel
+- ### 라라벨 작동 원리
+ 라라벨 부팅
+   - 오로로딩 : 자동으로 클래스나 인터페이스를 로딩해 주는것
+          ㅁ php5 autoloading 사용시
+              spl_autoload_register method로 하나하나 다 등록해야함
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+          ㅁ Composer 사용시
+              composer.json에 추가하고 composer update를 실행 시 오토로더 생성
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+              "require" : {
+                "monolog/monolog" : "^1.13",
+                "nesbot/carbon" : "^1.19"
+              },
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+          오토로더는 두 가지 방식을 사용
+            1. classmap : classmap에 지정된 폴더 내 모든 php 읽어서 정적배열 생성 후 오토로딩.
+                          정적배열을 사용해 psr-4보다 빠르지만 새로운 내용 업데이트시 컴포저에게
+                          오토로딩 정보를 갱신해야 한다고 명령해야함
 
-## Learning Laravel
+                          // $composer dump-autoload
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+            2. psr-4    : 네임스페이스와 이를 매칭시킬 디렉토리만 지정하여 런타임에 요청한 클래스등을 동적으로 로딩
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+                          ex)
+                          'Monolog\\'  => array($vendorDir . '/monolog/monolog/src/Monolog'),
+                          ------------------------
+                          user Monolog\Logger;
 
-## Laravel Sponsors
+                          네임스페이스 기준으로 use로 지정된 php 파일을 찾음
+                          //  vendor/monolog/monolog/src/Monolog/Looger.php
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+                          새로 composer에게 알려주지 않아도 되지만 속도가 느린 단점.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+        개발 환경에서는 psr-4를 사용하고 운영환경은 classmap을 사용하는 것이 좋은방법
+            //  $composer dump-autoload -o
+        psr-0,psr-4 방식의 오토로더를 classmap으로 덤프하여 더 빠른 서비스를 제공하도록 할 수있음.
+   - 서비스 컨테이너
+   - 환경설정 로드
+------------
