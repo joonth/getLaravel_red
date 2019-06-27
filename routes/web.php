@@ -21,10 +21,19 @@ Route::get('/', function (){
 
 */
 
-
+/*
 Route::get('/',function (){
    return view('welcome',[
        'name'=> 'fff',
        'greeting' => '안녀엉',
    ]);
+});*/
+/*
+Route::get('/',function (){
+   $items = ['apple','banana','tomato'];
+   return view('welcome',['items' => $items]);
+});*/
+
+Route::get('/',function (){
+   return view('welcome');
 });
