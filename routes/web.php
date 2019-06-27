@@ -11,12 +11,20 @@
 |
 */
 
+/*
+Route::get('/', function (){
+   return view('welcome')->with([
+       'name'=>'foo',
+       'greeting'=>'안녕',
+   ]) ;
+});
+
+*/
 
 
-Route::get('/',['as'=>'home',function(){
-    return '홈 리다이렉트 루트';
-}]);
-
-Route::get('/home',function (){
-   return redirect(route('home'));
+Route::get('/',function (){
+   return view('welcome',[
+       'name'=> 'fff',
+       'greeting' => '안녀엉',
+   ]);
 });
