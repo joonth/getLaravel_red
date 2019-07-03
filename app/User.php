@@ -14,6 +14,8 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $dates = ['last_login'];
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
