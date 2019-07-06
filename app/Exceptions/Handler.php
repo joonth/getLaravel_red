@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-       if(app()->environment('local')){
+       if(app()->environment('production')){
            $statusCode = 400;
            $title = '죄송합니다. :(';
            $description = '에러가 발생했습니다.';
