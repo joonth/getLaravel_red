@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        flash('환영합니다.');
+        //flash()->success('환영합니다.');
+        //flash()->warning('환영합니다.');
+       // flash()->error('환영합니다.');
         return view('home');
     }
 }
