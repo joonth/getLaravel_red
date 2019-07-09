@@ -6,7 +6,14 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-   public function create(){
+
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
+
+    public function create(){
        return view('users.create');
    }
 
@@ -25,17 +32,25 @@ class UsersController extends Controller
           'password' => bcrypt($request->input('password')),
            'confirm_code' => $confirmCode,
        ]);
-
+/*
        \Mail::send('emails.auth.confirm',compact('user'),function ($message)use($user){
            $message->to($user->email);
            $message->subject(
              sprintf('[%s] 회원 가입을 홧인해 주세요. ', config('app.name'))
            );
-       });
+       });*/
 
-       flash('가입하신 메일 계정으로 가입 확인 메이을 보내드렸습니다. 가입 확인하시고 로그인해 주세요.');
+    event(new \App\Events\UserCreated($user));
 
-       return redirect('/');
+
+      // flash('가입하신 메일 계정으로 가입 확인 메이을 보내드렸습니다. 가입 확인하시고 로그인해 주세요.');
+      // return redirect('/');
+       return $this->respondCreated('가입하신 메일 계정으로 가입 확인 메일을 보내드렸습니다. 가입 확인하시고 로그인해 주세요.');
+   }
+
+   protected function respondCreated($message){
+        flash($message);
+        return redirect('/');
    }
 
    public function confirm($code){
