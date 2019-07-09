@@ -69,10 +69,6 @@ Route::get('protected',function (){
    return '어서오세요' . auth()->user()->name;
 });
 
-Route::get('auth/logout',function (){
-   auth()->logout();
-   return '잘 가요';
-});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -170,7 +166,7 @@ Route::post('auth/login',[
 ]);
 
 Route::get('auth/logout',[
-    'as' => 'sessions.destory',
+    'as' => 'sessions.destroy',
     'uses' => 'SessionsController@destroy'
 ]);
 
