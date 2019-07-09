@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-4
+
 class UsersController extends Controller
 {
    public function create(){
@@ -17,14 +17,41 @@ class UsersController extends Controller
           'password' =>'required|confirmed|min:6',
        ]);
 
+       $confirmCode = str_random(60);
+
        $user = \App\User::create([
           'name' =>$request->input('name'),
           'email' => $request->input('email'),
           'password' => bcrypt($request->input('password')),
+           'confirm_code' => $confirmCode,
        ]);
 
+       \Mail::send('emails.auth.confirm',compact('user'),function ($message)use($user){
+           $message->to($user->email);
+           $message->subject(
+             sprintf('[%s] 회원 가입을 홧인해 주세요. ', config('app.name'))
+           );
+       });
+
+       flash('가입하신 메일 계정으로 가입 확인 메이을 보내드렸습니다. 가입 확인하시고 로그인해 주세요.');
+
+       return redirect('/');
+   }
+
+   public function confirm($code){
+       $user = \App\User::whereConfirmCode($code)->first();
+
+       if(! $user){
+           flash('URL이 정확하지 않습니다.');
+           return redirect('/');
+       }
+
+       $user->activated = 1;
+       $user->confirm_code = null;
+       $user->save();
+
        auth()->login($user);
-       flash(auth()->user()->name . '님 환영합니다.');
+       flash(auth()->user()->name . '님 환영합니다. 가입 확인되었습니다.');
 
        return redirect('home');
    }
