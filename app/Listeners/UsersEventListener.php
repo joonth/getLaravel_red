@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use function foo\func;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,14 +28,13 @@ class UsersEventListener
     }
 
     public function onPasswordRemindCreated(\App\Events\PasswordRemindCreated $event){
-        \Mail::send('emails.passwords.reset'),
-        ['token' => $event->token],
-        function ($message) use ($event){
-            $message -> to($event->email);
-            $message -> subject(
-              sprintf('[%s] 비밀번호를 초기화 하세요.',config('app.name'))
-            );
-        }
+       \Mail::send('emails.passwords.reset'.['token' => $event->token],
+           function ($message) use ($event){
+           $message -> to($event->email);
+           $message ->subject(
+             sprintf('[%s] 비밀번호를 초기화하세요.' , config('app.name'))
+           );
+       });
     }
 
     public function onUserCreated(\App\Events\UserCreated $event){
