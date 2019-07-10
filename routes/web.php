@@ -188,6 +188,11 @@ Route::get('auth/reset/{token}',[
    'uses' => 'PasswordsController@getReset',
 ]);
 
+Route::get('auth/reset/{token}',[
+   'as' => 'reset.create',
+   'uses' => 'PasswordsController@getReset',
+])->where('token','[\pL-\pN]{64}');
+
 Route::post('auth/reset',[
    'as' => 'reset.store',
    'uses' => 'PasswordsController@postReset',

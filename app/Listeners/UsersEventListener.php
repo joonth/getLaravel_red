@@ -19,6 +19,22 @@ class UsersEventListener
           \App\Events\UserCreated::class,
           __CLASS__. '@onUserCreated'
         );
+
+        $events->listen(
+            \App\Events\PasswordRemindCreated::class,
+            __CLASS__. '@onPasswordRemindCreated'
+        );
+    }
+
+    public function onPasswordRemindCreated(\App\Events\PasswordRemindCreated $event){
+        \Mail::send('emails.passwords.reset'),
+        ['token' => $event->token],
+        function ($message) use ($event){
+            $message -> to($event->email);
+            $message -> subject(
+              sprintf('[%s] 비밀번호를 초기화 하세요.',config('app.name'))
+            );
+        }
     }
 
     public function onUserCreated(\App\Events\UserCreated $event){
