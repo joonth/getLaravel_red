@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
@@ -20,11 +21,21 @@ class SocialController extends Controller
     }
 
     public function redirectToProvider($provider){
-        return \Socialite::drvier($provider)->redirect();
+        return \Socialite::driver($provider)->redirect();
     }
 
     protected function handleProviderCallback($provider){
         $user = \Socialite::driver($provider)->user();
-        dd($user);
+
+        $user = (\App\User::whereEmail($user->getEmail())->first())
+            ?: \App\User::create([
+               'name' => $user -> getName() ?: 'unknown',
+               'email' => $user -> getEmail(),
+               'activated' => 1,
+            ]);
+
+        auth()->login($user);
+        flash(auth() ->user()->name .' 님. 환영합니다.');
+        return redirect('home');
     }
 }
