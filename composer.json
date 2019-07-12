@@ -9,6 +9,7 @@
         "doctrine/dbal": "^2.9",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "~3.3",
+        "fortawesome/font-awesome": "^5.9",
         "intervention/image": "2.3.*",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.5.*",
