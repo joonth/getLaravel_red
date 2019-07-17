@@ -35,6 +35,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {
+
         $article = new \App\Article;
         return view('articles.create',compact('article'));
     }

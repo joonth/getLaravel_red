@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
+
 class SocialController extends Controller
 {
     public function __construct()
@@ -21,11 +22,11 @@ class SocialController extends Controller
     }
 
     public function redirectToProvider($provider){
-        return \Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
     protected function handleProviderCallback($provider){
-        $user = \Socialite::driver($provider)->user();
+        $user = Socialite::driver($provider)->user();
 
         $user = (\App\User::whereEmail($user->getEmail())->first())
             ?: \App\User::create([
