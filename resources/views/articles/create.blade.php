@@ -6,7 +6,7 @@
         <h1>새 포럼 글 쓰기</h1>
         <hr>
 
-        <form action="{{route('articles.store')}}" method="POST">
+        <form action="{{route('articles.store')}}" method="POST" enctype="multipart/form-data" class="form__article">
             {!! csrf_field() !!}
             
             <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}" >

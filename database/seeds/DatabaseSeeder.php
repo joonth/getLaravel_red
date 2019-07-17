@@ -15,57 +15,79 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         if(config('database.default') !== 'sqlite'){
+        $sqlite = in_array(config('database.default'),['sqlite','testing'],true);
+
+        if(! $sqlite){
             DB::statement('SET FOREIGN_KEY_CHECKS=0');
-         }
+        }
 
-     //    Model::unguard();
-
-         App\User::truncate();
-         $this->call(UsersTableSeeder::class);
-
-         App\Article::truncate();
-         $this->call(ArticlesTableSeeder::Class);
-
-     //   Model::reguard();
-
-
-        /*   태그    */
+        /* 태그 */
         App\Tag::truncate();
         DB::table('article_tag')->truncate();
         $tags = config('project.tags');
 
-        foreach($tags as $slug => $name){
+        foreach ($tags as $slug => $name){
             App\Tag::create([
-                'name' => $name,
+               'name' => $name ,
                 'slug' => str_slug($slug)
             ]);
         }
 
-        $this->command->info('Seeded: tags table');
+        $this -> command -> info('Seeded: tags table');
 
+        if(! app() -> environment(['production'])){
+            $this->seedForDev();
+        }
 
-        /*   변수 선언    */
+        if(! $sqlite){
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        }
+    }
+
+    protected function seedForDev(){
+        $this->call(UsersTableSeeder::class);
+        $this->call(ArticlesTableSeeder::class);
         $faker = app(Faker\Generator::class);
         $users = App\User::all();
         $articles = App\Article::all();
         $tags = App\Tag::all();
 
-
-        /*   아티클 태그 연결    */
         foreach ($articles as $article){
             $article -> tags() ->sync(
                 $faker->randomElements(
-                    $tags->pluck('id')->toArray(),rand(1,3)
+                    $tags->pluck('id')->toArray(),
+                    rand(1,3)
                 )
             );
         }
 
         $this->command->info('Seeded: article_tag table');
 
-        if(config('database.default') !== 'sqlite'){
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
-        }
-    }
+        App\Attachment::truncate();
 
+        if(! File::isDirectory(attachments_path())){
+            File::makeDirectory(attachments_path(),775,true);
+        }
+
+        File::cleanDirectory(attachments_path());
+
+        File::put(attachments_path('.gitignore'), "*\n!/gitignore");
+
+        $this->command->error(
+            'Downloading'. $articles->count() . ' images from lorempixel. It takes time...'
+        );
+
+        $articles->each(function($article) use ($faker){
+           $path = $faker -> image(attachments_path());
+           $filename = File::basename($path);
+           $bytes = File::size($path);
+           $mime = File::mimeType($path);
+           $this->command->warn("File saved: {$filename}");
+
+           $article->attachments()->save(
+             factory(App\Attachment::class)->make(compact('filename','bytes','mime'))
+           );
+        });
+        $this -> command ->info('Seeded: attachments table and files');
+    }
 }
