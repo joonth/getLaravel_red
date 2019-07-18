@@ -35,7 +35,6 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-
         $article = new \App\Article;
         return view('articles.create',compact('article'));
     }
@@ -48,10 +47,10 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-
+dd('오나요');
 
         $article = $request->user()->articles()->create($request->all());
-
+        dd($article);
         if(! $article){
             return back()->withInput();
         }

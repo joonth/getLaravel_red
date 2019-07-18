@@ -209,7 +209,7 @@ Route::get('social/{provider}',[
    'uses' => 'SocialController@execute',
 ]);
 
-Route::get('tags/{slug}articles',[
+Route::get('tags/{slug}/articles',[
    'as' => 'tags.articles.index',
    'uses' => 'ArticlesController@index'
 ]);
