@@ -1,3 +1,18 @@
+@php
+
+    $voted = null;
+
+    if($currentUser){
+    $voted = $comment -> votes->contains('user_id',$currentUser->id) ? 'disabled="disabled"' : null;
+
+    }
+
+@endphp
+
+
+
+
+
 <div class="media item__comment {{$isReply ? 'sub' : 'top'}}" data-id="{{ $comment->id }}" id="comment_{{$comment->id}}">
     @include('users.partial.avatar',['user'=> $comment->user, 'size' => 32])
 
@@ -13,6 +28,21 @@
 
         <div class="content__comment">
             {!! markdown($comment->content) !!}
+        </div>
+
+        <div class="action__comment">
+            @if ($currentUser)
+                <button class="btn__vote__comment" data-vote="up" title="좋아요" {{$voted}}>
+                    <i class="fa fa-chevron-up"></i>
+                    <span>{{$comment->up_count}}</span>
+                </button>
+
+                <span> | </span>
+
+                <button class="btn__vote__comment" data-vote="down" title="싫어요" {{$voted}}>
+                    <i class="fa fa-chevron-down"></i> <span>{{ $comment->down_count }}</span>
+                </button>
+            @endif
         </div>
 
         <div class="action__comment">

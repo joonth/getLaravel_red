@@ -99,6 +99,21 @@ class DatabaseSeeder extends Seeder
             }
         });
 
+        $this ->command->info('Seeded: comments table');
+
+        /* up % down 투표*/
+        $comments = App\Comment::all();
+
+        $comments->each(function($comment){
+           $comment->votes()->save(factory(App\Vote::class)->make());
+           $comment->votes()->save(factory(App\Vote::class)->make());
+           $comment->votes()->save(factory(App\Vote::class)->make());
+        });
+
+        $this->command->info('Seeded: votes table');
+
+
+
 
     }
 }

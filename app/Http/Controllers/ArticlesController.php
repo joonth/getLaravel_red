@@ -47,8 +47,6 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-dd('오나요');
-
         $article = $request->user()->articles()->create($request->all());
         dd($article);
         if(! $article){
@@ -85,10 +83,13 @@ dd('오나요');
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($article)
+    public function show(\App\Article $article)
     {
        //$article = \App\Article::findOrFail($id);
       //  debug($article->toArray());
+
+        $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+
        return view('articles.show',compact('article'));
     }
 
