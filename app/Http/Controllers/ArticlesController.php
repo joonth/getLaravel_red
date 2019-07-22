@@ -18,13 +18,24 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($slug = null)
+    public function index(Request $request , $slug = null)
     {
         $query = $slug
             ? \App\Tag::whereSlug($slug)->firstOrFail()->articles()
             : new \App\Article;
 
-        $articles = \App\Article::latest()->paginate(3);
+        $query = $query->orderBy(
+          $request->input('sort','created_at'),
+          $request->input('order','desc')
+        );
+
+        if($keyword = request()->input('q')){
+            $raw = 'MATCH(title,content) AGAINST(? IN BOOLEAN MODE)';
+            $query = $query->whereRaw($raw, [$keyword]);
+        }
+
+        $articles = $query -> paginate(3);
+
         return view('articles.index',compact('articles'));
     }
 
@@ -89,6 +100,10 @@ class ArticlesController extends Controller
       //  debug($article->toArray());
 
         $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+
+        $article-> view_count += 1;
+        $article-> save();
+
 
        return view('articles.show',compact('article'));
     }
