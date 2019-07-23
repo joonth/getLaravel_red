@@ -102,8 +102,8 @@ class ArticlesController extends Controller
     {
        //$article = \App\Article::findOrFail($id);
       //  debug($article->toArray());
+        $comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
 
-        $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
 
         $article-> view_count += 1;
         $article-> save();

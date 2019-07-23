@@ -31,8 +31,13 @@ class CommentsController extends Controller
     }
 
     public function destroy(\App\Comment $comment){
-        $comment ->delete();
-        return response() ->json([],204);
+        if($comment->replies()->count() > 0){
+            $comment->delete();
+        }else{
+            $comment->votes()->delete();
+            $comment->forceDelete();
+        }
+      return response()->json([], 204);
     }
 
     public function vote(Request $request, \App\Comment $comment){
