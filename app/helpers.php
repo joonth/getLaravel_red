@@ -54,7 +54,7 @@ function link_for_sort($column,$text,$params=[]){
 
     return sprintf(
       '<a href="%s?%s">%s</a>',
-      ulrdecode(request()->url()),
+      urldecode(request()->url()),
       $queryString,
       $text
     );
