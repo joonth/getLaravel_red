@@ -58,7 +58,7 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-        
+
        $payload = array_merge($request -> all(),[
            'notification'=> $request->has('notification'),
        ]);
