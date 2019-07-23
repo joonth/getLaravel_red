@@ -58,8 +58,12 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-        $article = $request->user()->articles()->create($request->all());
-        dd($article);
+        
+       $payload = array_merge($request -> all(),[
+           'notification'=> $request->has('notification'),
+       ]);
+
+        $article = $request->user()->articles()->create($payload);
         if(! $article){
             return back()->withInput();
         }
