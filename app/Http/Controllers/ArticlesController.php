@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticlesRequest;
 use Illuminate\Http\Request;
 
-class ArticlesController extends Controller
+class ArticlesController extends Controller implements Cacheable
 {
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth',['except' => ['index','show']]);
+    }
+
+    public function cacheTags(){
+        return 'articles';
     }
 
     /**
@@ -20,6 +25,11 @@ class ArticlesController extends Controller
      */
     public function index(Request $request , $slug = null)
     {
+
+
+       $cacheKey = cache_key('articles.index');
+
+
         $query = $slug
             ? \App\Tag::whereSlug($slug)->firstOrFail()->articles()
             : new \App\Article;
@@ -34,8 +44,7 @@ class ArticlesController extends Controller
             $query = $query->whereRaw($raw, [$keyword]);
         }
 
-        $articles = $query -> paginate(3);
-
+        $articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
         return view('articles.index',compact('articles'));
     }
 
@@ -86,9 +95,8 @@ class ArticlesController extends Controller
            }
        }
 
-
-       event(new \App\Events\ArticlesEvent($article));
-       return redirect(route('articles.index'))->with('flash_message','작성하신 글이 저장되었습니다.');
+        event(new \App\Events\ModelChanged(['articles']));
+        return redirect(route('articles.show'), $article->id);
 
     }
 

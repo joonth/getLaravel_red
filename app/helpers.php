@@ -59,3 +59,18 @@ function link_for_sort($column,$text,$params=[]){
       $text
     );
 }
+
+
+function cache_key($base){
+    $key = ($uri = request()->getQueryString())
+        ? $base.'.'.urlencode($uri)
+        : $base;
+
+    return md5($key);
+}
+
+function taggable(){
+    return in_array(config('cache.default'),['memcached','redis'],true);
+}
+
+

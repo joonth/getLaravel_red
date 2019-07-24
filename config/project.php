@@ -13,7 +13,7 @@ return [
         'view_count' => '조회수',
         'created_at' => '작성일',
     ],
-
+    'cache' =>false,
 
 
 
