@@ -50,4 +50,16 @@ class SessionsController extends Controller
         flash()->error($message);
         return back()->withInput();
     }
+
+   protected function respondCreated($message){
+        return ($return = request('return'))
+            ? redirect(urldecode($return)) : redirect()->intended('home');
+   }
+
+
+
+
+
+
+
 }

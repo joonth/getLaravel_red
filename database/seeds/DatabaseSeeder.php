@@ -23,9 +23,11 @@ class DatabaseSeeder extends Seeder
         App\Tag::truncate();
         DB::table('article_tag')->truncate();
         $tags = config('project.tags');
-        foreach($tags as $slug => $name) {
+        foreach(array_transpose($tags) as $slug => $names) {
             App\Tag::create([
-                    'name' => $name,
+                    'name'=>$names['ko'],
+                    'ko'=>$names['ko'],
+                    'en'=>$names['en'],
                     'slug' => str_slug($slug) ]
             );
         }
@@ -60,7 +62,7 @@ class DatabaseSeeder extends Seeder
         }
         $this->command->info('Seeded: article_tag table');
         /* 첨부 파일 */
-        /*App\Attachment::truncate();
+        App\Attachment::truncate();
         if (! File::isDirectory(attachments_path())) {
             File::makeDirectory(attachments_path(), 775, true);
         }
@@ -80,7 +82,7 @@ class DatabaseSeeder extends Seeder
                 factory(App\Attachment::class)->make(compact('filename', 'bytes', 'mime'))
             );
         });
-        */
+
 
        foreach(range(1,10) as $index){
            //테스트를 위해 고아가 된 첨부파일 생성
@@ -97,21 +99,8 @@ class DatabaseSeeder extends Seeder
               'bytes'=>$bytes,
               'mime'=>$mime,
               'created_at' => $faker->dateTimeBetween('-1 months'),
-
           ]);
-
-
-
-
        }
-
-
-
-
-
-
-
-
 
         $this->command->info('Seeded: attachments table and files');
         /* 댓글 */

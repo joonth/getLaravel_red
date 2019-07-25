@@ -12,6 +12,13 @@
             </p>
         </div>
 
+
+        @if ($return = request('return'))
+            <input type="hidden" name="return" value="{{ $return }}">
+        @endif
+
+
+
         <hr>
 
         <div class="form-group">

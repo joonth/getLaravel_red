@@ -42,8 +42,10 @@ Route::get('/','WelcomeController@index');
 
 Route::resource('articles','ArticlesController');
 
-
-
+Route::get('locale',[
+   'as' => 'locale',
+    'uses' => 'WelcomeController@locale',
+]);
 
 
 

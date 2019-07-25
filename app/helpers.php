@@ -73,4 +73,27 @@ function taggable(){
     return in_array(config('cache.default'),['memcached','redis'],true);
 }
 
+function current_url(){
+    if(! request()->has('return')){
+        return request()->fullUrl();
+    }
 
+    return sprintf(
+      '%s?%s',
+                request() ->url(),
+        http_build_query(request()->except('return'))
+    );
+
+}
+
+
+function array_transpose(array $data){
+    $res = [];
+
+    foreach ($data as $row => $columns){
+        foreach($columns as $row2 => $column2){
+            $res[$row2][$row] = $column2;
+        }
+    }
+    return $res;
+}
