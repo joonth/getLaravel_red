@@ -12,6 +12,7 @@ class Comment extends Model
     protected $datas = ['deleted_at'];
     protected $fillable = ['commentable_type','commentable_id','user_id','parent_id','content',];
     protected $with = ['user','votes',];
+    protected $hidden =['user_id','commentable_type','commentable_id','parent_id'];
     protected $appends = ['up_count','down_count'];
 
     public function getUpCountAttribute(){

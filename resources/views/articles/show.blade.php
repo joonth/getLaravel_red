@@ -5,40 +5,52 @@
         $viewName = 'articles.show';
     @endphp
 
-    <div class="col-md-3">
-        <aside>
-            @include('tags.partial.index')
-        </aside>
-    </div>
-    <div class="col-md-9">
-        <div class="page-header">
-            <h4>포럼 <small>/{{ $article->title }}</small></h4>
-        </div>
-
-        <article data-id="{{ $article->id }}">
-            @include('articles.partial.article',compact('article'))
-            <p>{!! markdown($article->content) !!}</p>
-            @include('tags.partial.list', ['tags' => $article->tags])
-            @include('tags.partial.list', ['tags' => $article->tags])
-        </article>
-
-        <div class="text-right action__article">
-            @can('update',$article)
-                <a href="{{ route('articles.edit',$article->id) }}" class="btn btn-info">
-                    <i class="fa fa-pencil"></i>글 수정
-                </a>
-            @endcan
-            @can('delete',$article)
-                <button class="btn btn-danger button__delete">
-                    <i class="fa fa-trash-o"></i>글 삭제
-                </button>
-            @endcan
-            <a href="{{ route('articles.index')}}" class="btn btn-default">
-                <i class="fa fa-list"></i> 글 목록
+    <div class="page-header">
+        <h4>
+            <a href="{{ route('articles.index') }}">
+                포럼
             </a>
+            <small>
+                / {{ $article->title }}
+            </small>
+        </h4>
+    </div>
+
+    <div class="row container__article">
+        <div class="col-md-3">
+            <aside>
+                @include('tags.partial.index')
+            </aside>
         </div>
-        <div class="container__comment">
-            @include('comments.index')
+        <div class="col-md-9">
+            <div class="page-header">
+                <h4>포럼 <small>/{{ $article->title }}</small></h4>
+            </div>
+
+            <article data-id="{{ $article->id }}">
+                @include('articles.partial.article',compact('article'))
+                <p>{!! markdown($article->content) !!}</p>
+                @include('tags.partial.list', ['tags' => $article->tags])
+            </article>
+
+            <div class="text-right action__article">
+                @can('update',$article)
+                    <a href="{{ route('articles.edit',$article->id) }}" class="btn btn-info">
+                        <i class="fa fa-pencil"></i>글 수정
+                    </a>
+                @endcan
+                @can('delete',$article)
+                    <button class="btn btn-danger button__delete">
+                        <i class="fa fa-trash-o"></i>글 삭제
+                    </button>
+                @endcan
+                <a href="{{ route('articles.index')}}" class="btn btn-default">
+                    <i class="fa fa-list"></i> 글 목록
+                </a>
+            </div>
+            <div class="container__comment">
+                @include('comments.index')
+            </div>
         </div>
     </div>
 @stop

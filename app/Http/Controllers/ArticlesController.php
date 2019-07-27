@@ -44,7 +44,7 @@ class ArticlesController extends Controller implements Cacheable
             $query = $query->whereRaw($raw, [$keyword]);
         }
 
-        $articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
+        $articles = $this->cache($cacheKey, 5, $query, 'paginate',10 );
         return view('articles.index',compact('articles'));
     }
 
@@ -108,16 +108,20 @@ class ArticlesController extends Controller implements Cacheable
      */
     public function show(\App\Article $article)
     {
-       //$article = \App\Article::findOrFail($id);
+     //  $article = \App\Article::findOrFail($id);
       //  debug($article->toArray());
-        $comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
 
+
+
+
+    //    $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+    $comments = 'dd';
 
         $article-> view_count += 1;
         $article-> save();
 
 
-       return view('articles.show',compact('article'));
+       return view('articles.show',compact('article','comments'));
     }
 
     /**
