@@ -10,20 +10,13 @@
 @endphp
 
 
-
-
-
-@if($isTrashed and !$hasChild)
-   <!--  // 1. 삭제된 댓글이면서 자식댓글도 없음. 아무것도 출력안함   -->
-@elseif($isTrashed and $hasChild)
-    <!--// 2. 삭제된 댓글이지만 자식댓글 있음. '삭제되었습니다. with 자식댓글 계속출력-->
     <div class="media item__comment {{$isReply ? 'sub' : 'top'}}" data-id="{{$comment->id}}" id="comment_{{$comment->id}}">
           @include('users.partial.avatar',['user'=>$comment->user,'size'=>32])
     </div>
 
     <div class="media-body">
        <h5 class="media-heading">
-           <a href="{{ gravatar_profile_url($comments->user->email) }}">
+           <a href="{{ gravatar_profile_url($comment->user->email) }}">
                {{ $comment -> user -> name }}
            </a>
            <small>
@@ -31,9 +24,10 @@
            </small>
        </h5>
 
-       <div class="text-danger content__comment">
-          삭제된 댓글
+       <div class="content__comment">
+           {!! markdown($comment -> content) !!}
        </div>
+
        <div class="action__comment">
           @if ($currentUser)
               <button class="btn__vote__comment" data-vote="up" title="좋아" {{$voted}}>

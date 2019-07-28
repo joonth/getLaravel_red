@@ -114,8 +114,7 @@ class ArticlesController extends Controller implements Cacheable
 
 
 
-    //    $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
-    $comments = 'dd';
+        $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
 
         $article-> view_count += 1;
         $article-> save();

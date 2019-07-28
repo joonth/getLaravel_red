@@ -10,6 +10,19 @@
     @endif
 </div>
 
+<div class="list__comment">
+    @forelse($comments as $comment)
+        @include('comments.partial.comment',[
+        'parentId' => $comment->id,
+        'isReply' => false,
+        'hasChild'=> $comment->replies->count(),
+        'isTrashed'=> $comment->trashed(),
+
+        ])
+        @empty
+    @endforelse
+</div>
+
 @section('script')
     @parent
     <script>
