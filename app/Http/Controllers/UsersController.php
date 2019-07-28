@@ -38,7 +38,9 @@ class UsersController extends Controller
            'password' => bcrypt($request->input('password')),
         ]);
 
-        auth()-login($user);
+       auth() ->login($user);
+
+        
 
         return $this->respondCreated($user->name . '님 환영합니다.');
    }
