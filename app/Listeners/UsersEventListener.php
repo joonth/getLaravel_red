@@ -28,7 +28,7 @@ class UsersEventListener
     }
 
     public function onPasswordRemindCreated(\App\Events\PasswordRemindCreated $event){
-       \Mail::send('emails.passwords.reset'.['token' => $event->token],
+       \Mail::send('emails.passwords.reset',['token' => $event->token],
            function ($message) use ($event){
            $message -> to($event->email);
            $message ->subject(

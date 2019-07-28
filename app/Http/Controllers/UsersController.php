@@ -40,7 +40,7 @@ class UsersController extends Controller
 
        auth() ->login($user);
 
-        
+
 
         return $this->respondCreated($user->name . '님 환영합니다.');
    }
