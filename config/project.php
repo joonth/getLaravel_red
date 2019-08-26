@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+    'api_domain'=>env('API_DOMAIN','api.myapp.dev'),
+   'name' => 'My Application',
+    'url'=> 'http://myapp.dev:8000',
+    'description'=>'',
     'tags' =>[
         'ko'=>[
             'laravel'=>'라라벨',
