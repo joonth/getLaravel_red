@@ -45,9 +45,13 @@ class ArticlesController extends Controller implements Cacheable
         }
 
         $articles = $this->cache($cacheKey, 5, $query, 'paginate',10 );
-        return view('articles.index',compact('articles'));
+    //    return view('articles.index',compact('articles'));
+        return $this->respondCollection($articles);
     }
 
+    protected function respondCollection(\Illuminate\Contracts\Pagination\LengthAwarePaginator $articles){
+        return view('articles.index',compact('articles'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -72,7 +76,8 @@ class ArticlesController extends Controller implements Cacheable
            'notification'=> $request->has('notification'),
        ]);
 
-        $article = $request->user()->articles()->create($payload);
+//        $article = $request->user()->articles()->create($payload);
+        $article = \App\User::find(1)->articles()->create($payload);
         if(! $article){
             return back()->withInput();
         }
@@ -96,7 +101,8 @@ class ArticlesController extends Controller implements Cacheable
        }
 
         event(new \App\Events\ModelChanged(['articles']));
-        return redirect(route('articles.show'), $article->id);
+       // return redirect(route('articles.show'), $article->id);
+        return redirect(route('articles.show',$article->id));
 
     }
 
