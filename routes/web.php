@@ -10,15 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[
-   'as'=>'home',
-   function(){
-    return 'nanana';
-   }
-]);
-
-
-Route::get('/home',function (){
-   return redirect(route('home'));
+Route::get('/', function(){
+    return view('welcome')->with('name','Foo');
 });
 
+Route::get('/',function(){
+   return view('welcome')->with([
+      'name'=>'ddd',
+      'dd' => 'dd1'
+   ]);
+});
+
+Route::get('/',function (){
+    return view('welcome',[
+        'hhh'=>'111',
+        'kkk'=>'222'
+    ])  ;
+});

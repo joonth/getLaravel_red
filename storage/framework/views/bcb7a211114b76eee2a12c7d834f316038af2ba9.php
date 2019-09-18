@@ -1,1 +1,1 @@
-<h1>Hello world</h1><?php /**PATH /home/joon/DEV/getLaravel_red/resources/views/welcome.blade.php ENDPATH**/ ?>
+<h1><?php echo e($hhh); ?>.<?php echo e($kkk); ?></h1><?php /**PATH /home/joon/DEV/getLaravel_red/resources/views/welcome.blade.php ENDPATH**/ ?>
