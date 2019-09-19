@@ -1,1 +1,15 @@
-<h1>{{$hhh}}.{{$kkk}}</h1>
+@extends('layouts.master')
+
+
+
+@section('content')
+   @include('partials.footer')
+@endsection
+
+
+@section('script')
+    <script>
+        alert('welcome!!');
+    </script>
+@endsection
+
