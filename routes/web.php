@@ -22,8 +22,5 @@ Route::get('/',function(){
 });
 
 Route::get('/',function (){
-    return view('welcome',[
-        'hhh'=>'111',
-        'kkk'=>'222'
-    ])  ;
+ return view('welcome');
 });
