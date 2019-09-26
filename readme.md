@@ -8,3 +8,4 @@
   3. [라우팅](https://github.com/joonth/getLaravel_red/blob/1/doc/3.md)
   4. [뷰와 데이터 바인딩](https://github.com/joonth/getLaravel_red/blob/1/doc/4.md)
   5. [블레이드](https://github.com/joonth/getLaravel_red/blob/1/doc/5.md)
+  6. [데이터베이스와 모델](https://github.com/joonth/getLaravel_red/blob/1/doc/6.md)
