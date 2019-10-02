@@ -28,4 +28,4 @@ Route::get('/',function (){
 
 
 Route::get('/','WelcomeController@index');
-Route::resource('/','ArticlesController');
+Route::resource('articles','ArticlesController');
